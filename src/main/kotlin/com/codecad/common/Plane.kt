@@ -45,11 +45,31 @@ class Plane(val normal : PointD, val distance: Double){
         fun fromPoints(points : List<PointD>) : Plane {
             return fromPoints(points[0], points[1], points[2])
         }
+
+        fun fromConvexPoints(points : Iterable<PointD>) : Plane {
+            return fromConvexPoints(points.iterator())
+        }
+
+        fun fromConvexPoints(points : Iterator<PointD>) : Plane {
+            return fromPoints(getNextOr(points), getNextOr(points), getNextOr(points))
+        }
+
+        fun getNextOr(points : Iterator<PointD>) : PointD{
+            return points.next()
+        }
     }
 
     fun normalized() : Plane {
         val length = normal.length()
         return Plane(normal / length, distance / length)
+    }
+
+    fun flip(offset: Double = 0.0) : Plane{
+        return Plane(normal * -1.0, distance * -1 + offset)
+    }
+
+    fun move( offset: Double ) : Plane{
+        return Plane(normal, distance + offset)
     }
 
     fun distanceTo(p: PointD) : Double{

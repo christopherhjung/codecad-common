@@ -7,7 +7,7 @@ import kotlin.math.sqrt
 class PointD(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0){
 
     override fun toString(): String {
-        return "com.codecad.core.PointD(x=$x, y=$y, z=$z)"
+        return "PointD(x=$x, y=$y, z=$z)"
     }
 
     operator fun get(index: Int) : Double{
@@ -34,12 +34,40 @@ class PointD(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0){
         return PointD(this.x - other.x, this.y - other.y, this.z - other.z)
     }
 
+    operator fun minusAssign(other: PointD) {
+        x -= other.x
+        y -= other.y
+        z -= other.z
+    }
+
     operator fun plus(other: PointD): PointD {
         return PointD(this.x + other.x, this.y + other.y, this.z + other.z)
     }
 
+    operator fun plusAssign(other: PointD) {
+        x += other.x
+        y += other.y
+        z += other.z
+    }
+
     operator fun times(other: Double): PointD {
         return PointD(x * other, y * other, z * other)
+    }
+
+    operator fun timesAssign(other: Double){
+        x *= other
+        y *= other
+        z *= other
+    }
+
+    operator fun div(other: Double) : PointD {
+        return PointD(this.x / other, this.y / other, this.z / other)
+    }
+
+    operator fun divAssign(other: Double){
+        x /= other
+        y /= other
+        z /= other
     }
 
     fun crossZ(other: PointD): Double{
@@ -48,10 +76,6 @@ class PointD(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0){
 
     fun dot(other: PointD): Double{
         return this.x * other.x + this.y * other.y + this.z * other.z
-    }
-
-    operator fun div(other: Double) : PointD {
-        return PointD(this.x / other, this.y / other, this.z / other)
     }
 
     fun cross(other: PointD, result: PointD = PointD()): PointD {
@@ -115,9 +139,10 @@ class PointD(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0){
 
     companion object{
         val ZERO = PointD(0.0,0.0,0.0)
+
+        operator fun Double.times(other: PointD): PointD {
+            return PointD(other.x * this, other.y * this, other.z * this)
+        }
     }
 }
 
-operator fun Double.times(other: PointD): PointD {
-    return PointD(other.x * this, other.y * this, other.z * this)
-}
